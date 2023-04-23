@@ -22,6 +22,7 @@ interface Movie {
   tagline: string;
   imdb_id: string;
   backdrop_path: string;
+  video: boolean;
 }
 
 interface Genre {
@@ -41,6 +42,7 @@ const MovieDetail = () => {
   const [actors, setActors] = React.useState([] as Actor[])
   const router = useRouter()
   const movieId = router.query.MovieId
+  const [video, setVideo] = React.useState("")
 
 
 
@@ -56,12 +58,17 @@ const MovieDetail = () => {
       .then((res) => {
         setActors(res.data.cast)
       })
+      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+      .then((res) => {
+        setVideo(res.data.results[3].key)
+        console.log(res.data.results[3].key)
+      })
       .catch((err) => {
         console.log(err)
       })
     }, [])
 
-    
+    console.log(movie.video)
 
   return (
     <div className='flex flex-col'>
@@ -96,7 +103,7 @@ const MovieDetail = () => {
       </div>
 
         <div className='flex flex-col gap-2 px-2 mt-5 '>
-          <h1 className='text-2xl font-bold'>Actors</h1>
+          <h1 className='text-2xl font-bold'>Cast</h1>
           <div className="flex overflow-scroll gap-3 rounded-md hover:border border-gray-400 ">
             {
               actors.map((actor:Actor) => {
@@ -111,6 +118,7 @@ const MovieDetail = () => {
             }
           </div>
       </div>
+        <iframe className='mt-10 mb-10 h-64 w-full ' src={`https://www.youtube.com/embed/${video}`} title="برشلونة ينتصر على أتلتيكو مدريد عودة بيدري و تضمين الصدارة" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   )
 }

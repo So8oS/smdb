@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -107,16 +108,16 @@ const TvDetail = () => {
         </div>
   
         <div className='flex flex-col gap-2 px-2 mt-5'>
-          <h1 className='text-2xl font-bold'>Actors</h1>
+          <h1 className='text-2xl font-bold'>Cast</h1>
           <div className='flex overflow-scroll gap-3 rounded-md hover:border border-gray-400 '>
           {
               actors.map((actor:Actor) => {
                 return (
-                  <div className='flex flex-col justify-center items-center min-w-fit '>
+                  <Link href={`/Actor/${actor.id}`} className='flex flex-col justify-center items-center min-w-fit '>
                     <img className='w-28' src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} alt={actor.name} />
                     <p className='text-sm'>{actor.name.slice(0,13)}</p>
                     <p className='text-xs text-gray-600'>{`(${actor.character.slice(0,13)})`}</p>
-                  </div>
+                  </Link>
                 )
               }).slice(0,10)
             }
