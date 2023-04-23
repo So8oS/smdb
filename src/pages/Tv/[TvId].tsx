@@ -30,6 +30,20 @@ interface Actor {
   character: string;
 }
 
+interface TvDetailProps {
+  tv: show;
+  actors: Actor[];
+}
+
+interface genre {
+  id: number;
+  name: string;
+}
+
+interface company {
+  id: number;
+  name: string;
+}
 
 const TvDetail = () => {
   const [tv, setTv] = React.useState({} as show)
@@ -72,15 +86,15 @@ const TvDetail = () => {
               </p>
               {/* <p>{`${tv.runtime} mins`}</p> */}
               <div className='flex gap-1'>
-                {tv.genres?.map((genre) => {
+                {tv.genres?.map((genre:genre) => {
                   return <p key={genre?.id}>{genre?.name}</p>;
                 })}
               </div>
             </div>
   
-            <div className='flex gap-1 text-sm px-[2px]'>
-              {tv.production_companies?.map((company) => {
-                return <p key={company?.id}>{company?.name}</p>;
+            <div className='flex gap-2 text-sm px-[2px]'>
+              {tv.production_companies?.map((company:company) => {
+                return <p key={company?.id}>{company?.name.slice(0,12)}</p>;
               }).slice(0,2)}
             </div>
           </div>
