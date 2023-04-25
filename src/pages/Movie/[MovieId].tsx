@@ -60,8 +60,8 @@ const MovieDetail = () => {
       })
       axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
       .then((res) => {
-        setVideo(res.data.results[3].key)
-        console.log(res.data.results[3].key)
+        setVideo(res.data.results[3].key? res.data.results[3].key : res.data.results[0].key)
+        console.log(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -72,7 +72,7 @@ const MovieDetail = () => {
 
   return (
     <div className='flex flex-col'>
-        <img className='w-full 'src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
+        <img className='w-full  'src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
         
         <div className='px-2'>
           <h1 className=' text-3xl font-bold'>{movie.title}</h1>
@@ -118,7 +118,9 @@ const MovieDetail = () => {
             }
           </div>
       </div>
-        <iframe className='mt-10 mb-10 h-64 w-full ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+      {
+        video && <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+      }
     </div>
   )
 }
