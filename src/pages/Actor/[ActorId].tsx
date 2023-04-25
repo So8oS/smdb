@@ -12,6 +12,7 @@ interface Credit {
     birthday: string;
     place_of_birth: string;
     biography: string;
+    deathday: string;
 }
 
 interface creditsMoive {
