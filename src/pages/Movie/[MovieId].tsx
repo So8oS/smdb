@@ -118,7 +118,7 @@ const MovieDetail = () => {
             }
           </div>
       </div>
-        <iframe className='mt-10 mb-10 h-64 w-full ' src={`https://www.youtube.com/embed/${video}`} title="برشلونة ينتصر على أتلتيكو مدريد عودة بيدري و تضمين الصدارة" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe className='mt-10 mb-10 h-64 w-full ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
     </div>
   )
 }
