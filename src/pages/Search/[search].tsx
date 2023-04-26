@@ -66,9 +66,12 @@ const SearchPage = () => {
                 : '/'
             }
             key={result.id}
-            className="flex items-center gap-3 text-center border-b border-white"
-          >
-            <img className="w-20 h-full" src={`https://image.tmdb.org/t/p/w500/${result.poster_path || result.profile_path}`} />
+            className="flex items-center gap-3 text-center border-b border-white">
+           {result.poster_path ?
+             <img className="w-20 h-full" src={`https://image.tmdb.org/t/p/w500/${result.poster_path || result.profile_path}`} />
+             : <div className="w-20 h-full py-2" >{result.title || result.name}</div>
+            }
+           
             <h1 className="">{result.title || result.name}</h1>
           </Link>
         ))}

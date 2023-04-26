@@ -56,6 +56,13 @@ axios.get(`https://api.themoviedb.org/3/search/multi?api_key=70d7f1c2e02011774cc
             <h1>Home</h1>
         </Link> */}
         
+        <h1 className='font-Lobster text-3xl shadow-2xl text-[#F5F5F5] cursor-pointer'
+        onClick={
+            () => {
+              window.location.href = '/' 
+            }}
+        >SMDB</h1>
+
         <Link href={'/'}  className=' w-12  flex flex-col justify-center items-center gap-1 hover:bg-gray-700   border-gray-200 rounded-md'>
             <RiMovie2Fill className='w-8 h-6'/>
             <h1>Movies</h1>
