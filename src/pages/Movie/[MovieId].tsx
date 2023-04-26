@@ -2,6 +2,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { AiFillStar } from 'react-icons/ai';
 
 interface Movie {
   id: number;
@@ -36,6 +37,18 @@ interface Actor {
   character: string;
 }
 
+interface Review {
+  id: number;
+  author: string;
+  content: string;
+  author_details: {
+    username: string;
+    rating: number;
+    avatar_path: string;
+  };
+
+
+}
 
 const MovieDetail = () => {
   const [movie, setMovie] = React.useState({} as Movie)
@@ -43,32 +56,45 @@ const MovieDetail = () => {
   const router = useRouter()
   const movieId = router.query.MovieId
   const [video, setVideo] = React.useState("")
-
+  const [reviews, setReviews] = React.useState([] as Review[])
+  const [readMore, setReadMore] = React.useState({num: 200,text: 'Show More'})
+  const [similar, setSimilar] = React.useState([] as Movie[])
 
 
   
    
 
     useEffect(() => {
-      axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+      axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.API_KEY}`)
       .then((res) => {
           setMovie(res.data)
       })
-      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.API_KEY}`)
       .then((res) => {
         setActors(res.data.cast)
       })
-      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.API_KEY}`)
       .then((res) => {
-        setVideo(res.data.results[3].key? res.data.results[3].key : res.data.results[0].key)
-        console.log(res.data)
+        // setVideo(res.data.results[3].key? res.data.results[3].key : res.data.results[0].key)
+        console.log(res.data.results)
+      })
+      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${process.env.API_KEY}`)
+      .then((res) => {
+          setReviews(res.data.results)
+
+      })
+      axios.get(`https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.API_KEY}`)
+      .then((res) => {
+          setSimilar(res.data.results)
+
       })
       .catch((err) => {
         console.log(err)
       })
-    }, [])
+    }, [movieId])
 
-    console.log(movie.video)
+  
+
 
   return (
     <div className='flex flex-col'>
@@ -109,7 +135,10 @@ const MovieDetail = () => {
               actors.map((actor:Actor) => {
                 return (
                   <Link href={`/Actor/${actor.id}`} className='flex flex-col justify-center items-center min-w-fit '>
-                    <img className='w-28' src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} alt={actor.name} />
+                    
+                    {actor.profile_path && 
+                      <img className='w-28' src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} alt={actor.name} />
+                    }
                     <p className='text-sm'>{actor.name.slice(0,13)}</p>
                     <p className='text-xs text-gray-600'>{`(${actor.character.slice(0,13)})`}</p>
                   </Link>
@@ -119,8 +148,60 @@ const MovieDetail = () => {
           </div>
       </div>
       {
-        video && <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        video? <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        : <p className=''></p>
       }
+        <h1 className='text-2xl font-bold px-2'>Reviews</h1>
+      <div className='flex overflow-scroll p-3 gap-2 '>
+        {
+          reviews?.map((review:Review) => {
+            return (
+              <div key={review.id} className='flex flex-col border border-gray-400 p-2 gap-2 mt-3 min-w-fit shadow-2xl'>
+                <div className="flex flex-col">
+                  <p className='font-semibold'>{`Author: ${review.author}`}</p>
+                  <p className='text-sm flex items-center'>
+                    {`Rating: ${review.author_details.rating}`}
+                    <AiFillStar className='w-3 mt-1 ml-[2px]'/>
+                    </p>
+                </div>
+                <p key={review.id}>{review.content.slice(0,readMore.num)}..
+                <button key={review.id} className="text-blue-500" onClick={() => { 
+                    if(readMore.num === 200){
+                    setReadMore({num: review.content.length, text: 'Show Less'})}
+                    else{setReadMore({num: 200, text: 'Show More'})}}}
+                    >{readMore.text}
+                </button></p>
+                <p className='text-xs text-gray-600'>{`Posted by: ${review.author_details.username}`}</p>
+            </div>
+            )
+          }).slice(0,3)
+        }
+        
+      </div>
+
+      <div className="flex justify-center items-center px-2">
+        <div className='flex overflow-scroll gap-3  rounded-md hover:border border-gray-400 p-2 '>
+            {
+                similar.map((movie) => {
+                  return (
+                    <Link  key={movie.id} href={`/Movie/${movie.id}`} as={`/Movie/${movie.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
+        
+                      {movie.backdrop_path ? (
+                      <img className='w-56' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
+                      ) : (
+                      <div className='flex w-56 h-32 justify-center items-center bg-gray-600'>
+                        <h1>{movie.title}</h1>
+                        </div>
+                      )}
+        
+                      <p className='text-sm'>{movie.title}</p>
+                      {/* <p className='text-xs text-gray-600'>{`(${movie.character.slice(0,13)})`}</p> */}
+                    </Link>
+                  )
+                }).slice(0,10)
+              }
+            </div>
+      </div>
     </div>
   )
 }

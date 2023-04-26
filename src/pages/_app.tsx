@@ -6,11 +6,12 @@ import type { AppProps } from 'next/app'
 import Typewriter from 'typewriter-effect'
 // import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = React.useState(false);
-  
+  const router = useRouter();
+
   useEffect(() => {
   setTimeout(() => {
     setLoading(true);
@@ -23,7 +24,7 @@ return (
     {!loading ?(
       <div className="flex justify-center items-center h-screen bg-[#1B1E2C] text-white font-bold text-5xl">
         <Typewriter options={{ strings: ['SMDB'],autoStart: true, }}/>
-      </div>
+      </div> 
     ) : (
       <div className=''>
         <Component {...pageProps} />

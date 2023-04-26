@@ -4,6 +4,7 @@ import { RiMovie2Fill } from 'react-icons/ri'
 import Link from 'next/link'
 import axios from 'axios'
 import { FaSearch } from 'react-icons/fa'
+import { BsSearch } from 'react-icons/bs'
 
 
 interface searchResult {
@@ -102,7 +103,7 @@ axios.get(`https://api.themoviedb.org/3/search/multi?api_key=70d7f1c2e02011774cc
                 })
             }
         </div>
-        }*/}
+        } */}
     </div> 
   )
 }

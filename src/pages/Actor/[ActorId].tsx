@@ -89,7 +89,7 @@ const CreditDetails = () => {
           {
               movieCredits.map((movie) => {
                 return (
-                  <Link href={`/Movie/${movie.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
+                  <Link key={movie.id} href={`/Movie/${movie.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
                     
                     {movie.backdrop_path ? (
                     <img className='w-56' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.name} />

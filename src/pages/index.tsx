@@ -14,6 +14,7 @@ export default function Home() {
   return (
     <div className='flex flex-col justify-center items-center' >
      {/* <Navbar /> */}
+     {/* <List type="latest"/> */}
      <List type="top_rated"/>
      <List type="now_playing"/>
      <List type="popular" />
