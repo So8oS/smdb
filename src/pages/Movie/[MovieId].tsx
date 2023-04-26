@@ -75,7 +75,7 @@ const MovieDetail = () => {
       })
       axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.API_KEY}`)
       .then((res) => {
-        // setVideo(res.data.results[3].key? res.data.results[3].key : res.data.results[0].key)
+        setVideo(res.data.results[2]?.key || res.data.results[3]?.key)
         console.log(res.data.results)
       })
       axios.get(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${process.env.API_KEY}`)
@@ -126,6 +126,9 @@ const MovieDetail = () => {
 
         
         <p className='mt-1'>{movie.overview}</p>
+
+
+        
       </div>
 
         <div className='flex flex-col gap-2 px-2 mt-5 '>
@@ -134,7 +137,7 @@ const MovieDetail = () => {
             {
               actors.map((actor:Actor) => {
                 return (
-                  <Link href={`/Actor/${actor.id}`} className='flex flex-col justify-center items-center min-w-fit '>
+                  <Link key={actor.id} href={`/Actor/${actor.id}`} className='flex flex-col justify-center items-center min-w-fit '>
                     
                     {actor.profile_path && 
                       <img className='w-28' src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} alt={actor.name} />
@@ -151,35 +154,38 @@ const MovieDetail = () => {
         video? <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         : <p className=''></p>
       }
-        <h1 className='text-2xl font-bold px-2'>Reviews</h1>
-      <div className='flex overflow-scroll p-3 gap-2 '>
-        {
-          reviews?.map((review:Review) => {
-            return (
-              <div key={review.id} className='flex flex-col border border-gray-400 p-2 gap-2 mt-3 min-w-fit shadow-2xl'>
-                <div className="flex flex-col">
-                  <p className='font-semibold'>{`Author: ${review.author}`}</p>
-                  <p className='text-sm flex items-center'>
-                    {`Rating: ${review.author_details.rating}`}
-                    <AiFillStar className='w-3 mt-1 ml-[2px]'/>
-                    </p>
+        { reviews && <div className="flex flex-col  px-2">
+          <h1 className='text-2xl font-bold '>Reviews</h1>
+                <div className='flex overflow-scroll  gap-2 '>
+          {
+            reviews?.map((review:Review) => {
+              return (
+                <div key={review.id} className='flex flex-col border border-gray-400 p-2 gap-2 mt-3 min-w-fit shadow-2xl'>
+                  <div className="flex flex-col">
+                    <p className='font-semibold'>{`Author: ${review.author}`}</p>
+                    <p className='text-sm flex items-center'>
+                      {`Rating: ${review.author_details.rating}`}
+                      <AiFillStar className='w-3 mt-1 ml-[2px]'/>
+                      </p>
+                  </div>
+                  <p key={review.id}>{review.content.slice(0,readMore.num)}..
+                  <button key={review.id} className="text-blue-500" onClick={() => {
+                      if(readMore.num === 200){
+                      setReadMore({num: review.content.length, text: 'Show Less'})}
+                      else{setReadMore({num: 200, text: 'Show More'})}}}
+                      >{readMore.text}
+                  </button></p>
+                  <p className='text-xs text-gray-600'>{`Posted by: ${review.author_details.username}`}</p>
+              </div>
+              )
+            }).slice(0,3)
+          }
+          
                 </div>
-                <p key={review.id}>{review.content.slice(0,readMore.num)}..
-                <button key={review.id} className="text-blue-500" onClick={() => { 
-                    if(readMore.num === 200){
-                    setReadMore({num: review.content.length, text: 'Show Less'})}
-                    else{setReadMore({num: 200, text: 'Show More'})}}}
-                    >{readMore.text}
-                </button></p>
-                <p className='text-xs text-gray-600'>{`Posted by: ${review.author_details.username}`}</p>
-            </div>
-            )
-          }).slice(0,3)
-        }
-        
-      </div>
+        </div>}
 
-      <div className="flex justify-center items-center px-2">
+      <div className="flex flex-col  px-2 mt-5">
+      <h1 className='text-2xl font-bold '>Recomended</h1>
         <div className='flex overflow-scroll gap-3  rounded-md hover:border border-gray-400 p-2 '>
             {
                 similar.map((movie) => {
