@@ -165,7 +165,7 @@ const MovieDetail = () => {
                     <p className='font-semibold'>{`Author: ${review.author}`}</p>
                     <p className='text-sm flex items-center'>
                       {`Rating: ${review.author_details.rating}`}
-                      <AiFillStar className='w-3 mt-1 ml-[2px]'/>
+                      <AiFillStar className='w-3 ml-[2px]'/>
                       </p>
                   </div>
                   <p key={review.id}>{review.content.slice(0,readMore.num)}..
