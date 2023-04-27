@@ -93,7 +93,7 @@ const TvDetail = () => {
     .catch((err) => {
       console.log(err)
     })
-  }, [])
+  }, [tvId])
   
     return (
       <div className='flex flex-col'>
