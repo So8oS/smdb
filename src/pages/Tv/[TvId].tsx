@@ -103,7 +103,7 @@ const TvDetail = () => {
           alt={tv.name}
         />
   
-        <div className='px-2 flex flex-col'>
+        <div className='px-2'>
           <h1 className=' text-3xl font-bold'>{tv.name}</h1>
           <div className='flex flex-col'>
             <div className='flex gap-2 items-center '>
@@ -209,7 +209,7 @@ const TvDetail = () => {
             {
                 similar.map((tv) => {
                   return (
-                    <Link  key={tv.id} href={`/tv/${tv.id}`} as={`/Movie/${tv.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
+                    <Link  key={tv.id} href={`/Tv/${tv.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
         
                       {tv.backdrop_path ? (
                       <img className='w-56' src={`https://image.tmdb.org/t/p/original${tv.backdrop_path}`} alt={tv.name} />

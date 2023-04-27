@@ -43,7 +43,6 @@ const [open, setOpen] = React.useState(false)
 useEffect(() => {
 axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.API_KEY}&query=${search}`)
 .then((res) => {
-    console.log(res.data.results)
     setSearchResult(res.data.results)
 
 })

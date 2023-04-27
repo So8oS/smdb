@@ -17,6 +17,7 @@ const TvList = ({ type }: { type: string }) => {
         
         .then((res) => {
             setTv(res.data.results)
+            console.log(res.data)
         })
         .catch((err) => {
           console.log(err)
