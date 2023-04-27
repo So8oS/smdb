@@ -34,7 +34,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     axios
-      .get(`https://api.themoviedb.org/3/search/multi?api_key=70d7f1c2e02011774ccb989c4e9584c3&query=${search}`)
+      .get(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.API_KEY}&query=${search}`)
       .then((res) => {
         setSearchResult(res.data.results);
       });

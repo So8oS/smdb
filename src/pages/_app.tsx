@@ -1,21 +1,15 @@
 import React, { useEffect } from 'react'
-import Navbar from '@/componants/Navbar'
 import Switch from '@/componants/Switch'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Typewriter from 'typewriter-effect'
-// import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = React.useState(false);
-  const router = useRouter();
 
   useEffect(() => {
   setTimeout(() => {
     setLoading(true);
-    // AOS.init({once: true});
   }, 2300);
 }, []);
 

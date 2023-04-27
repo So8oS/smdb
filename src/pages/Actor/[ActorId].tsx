@@ -32,11 +32,11 @@ const CreditDetails = () => {
   console.log(creditId)
 
   useEffect(() => {
-    axios.get(`https://api.themoviedb.org/3/person/${creditId}?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+    axios.get(`https://api.themoviedb.org/3/person/${creditId}?api_key=${process.env.API_KEY}`)
       .then((res) => {
         setCredit(res.data)
       })
-      axios.get(`https://api.themoviedb.org/3/person/${creditId}/movie_credits?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+      axios.get(`https://api.themoviedb.org/3/person/${creditId}/movie_credits?api_key=${process.env.API_KEY}`)
       .then((res) => {
         setMovieCredits(res.data.cast)
         console.log(res.data.cast)

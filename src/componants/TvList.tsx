@@ -13,7 +13,7 @@ interface Tv {
 const TvList = ({ type }: { type: string }) => {
     const [tv, setTv] = React.useState([])
     useEffect(() => {
-        axios.get(`https://api.themoviedb.org/3/tv/${type}?api_key=70d7f1c2e02011774ccb989c4e9584c3`)
+        axios.get(`https://api.themoviedb.org/3/tv/${type}?api_key=${process.env.API_KEY}`)
         
         .then((res) => {
             setTv(res.data.results)
