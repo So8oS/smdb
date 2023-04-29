@@ -37,6 +37,7 @@ const SearchPage = () => {
       .get(`https://api.themoviedb.org/3/search/multi?api_key=${process.env.API_KEY}&query=${search}`)
       .then((res) => {
         setSearchResult(res.data.results);
+        console.log(res.data.results);
       });
   }, [search]);
 
@@ -66,10 +67,11 @@ const SearchPage = () => {
                 : '/'
             }
             key={result.id}
-            className="flex items-center gap-3 text-center border-b border-white">
-           {result.poster_path ?
-             <img className="w-20 h-full" src={`https://image.tmdb.org/t/p/w500/${result.poster_path || result.profile_path}`} />
-             : <div className="w-20 h-full py-2" >{result.title || result.name}</div>
+            className="flex items-center gap-3 border-b border-white">
+           {!result.poster_path ?
+             <div className="w-20 h-full py-2" >{result.title || result.name}</div>
+             : 
+             <img className="w-20 h-full" src={`https://image.tmdb.org/t/p/original/${result.poster_path || result.profile_path}`} />
             }
            
             <h1 className="">{result.title || result.name}</h1>
