@@ -145,7 +145,16 @@ const MovieDetail = () => {
                 {/* ============================== */}
           
                 {
-          video? <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+          video? <div className="flex justify-center items-center">
+          <iframe className='mt-10 mb-10 
+          h-52 w-80 
+          md:h-[19rem] md:w-[26rem] 
+          lg:h-[30rem] lg:w-[55rem]
+          
+           shadow-2xl
+          
+          ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
           : <p className=''></p>
                 }
           
