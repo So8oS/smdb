@@ -16,7 +16,29 @@ a, Link{
 body::-webkit-scrollbar {
     display: none;
 }
-div::-webkit-scrollbar {
+@media (max-width: 800px) {
+    div::-webkit-scrollbar {
+      display: none;
+      
+    }
+  }
+
+@media (min-width: 800px) {
+    div {
+      /* @apply overflow-x-scroll; */
+      @apply scrollbar-thin;
+      @apply scrollbar-thumb-gray-700;
+      
+    }
+   
+  }
+
+  
+
+
+
+
+/* div::-webkit-scrollbar {
     display: none;
-}
+} */
 

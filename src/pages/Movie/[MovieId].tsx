@@ -3,6 +3,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiFillStar } from 'react-icons/ai';
+import PageWrapper from '@/componants/PageWrapper';
 
 
 interface Movie {
@@ -92,136 +93,127 @@ const MovieDetail = () => {
 
   return (
     <div className='flex flex-col'>
-        <img className='w-full  'src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
-        
-        <div className='px-2'>
-          <h1 className=' text-3xl font-bold'>{movie.title}</h1>
-          <div className="flex flex-col">
-            <div className="flex gap-2 items-center ">
-              <p className='font-semibold border px-[2px] border-gray-700'>{movie?.release_date?.slice(0,4)}</p>
-              <p>{`${movie.runtime} mins`}</p>
-              <div className='flex gap-1'>
-                {movie.genres?.map((genre:Genre) => { return (<p key={genre?.id}>{genre?.name}</p>)}).slice(0,2)}
-              </div>
-            </div>
 
-            <div className='flex gap-1 text-sm px-[2px]'>
-              {movie.production_companies?.map((company:Genre) => { return (<p key={company?.id}>{company?.name}</p>)}).slice(0,3)}
-            </div>
-          </div>
-
-
-          {/* Tagline */}
-          {/* ============================== */}
-
-
-        <div className='border-b-2 border-red-700 w-fit mt-3'>
-          <p className='italic'>{movie.tagline}</p>
-        </div>
-        
-
-        
-        <p className='mt-1'>{movie.overview}</p>
-
-
-        {/* Cast */}
-        {/* ============================== */}
-
-        <div className='flex flex-col gap-2  mt-5 '>
-          <h1 className='text-2xl font-bold'>Cast</h1>
-          <div className="flex overflow-scroll gap-3 rounded-md hover:border border-gray-400 ">
-            {
-              actors.map((actor:Actor) => {
-                return (
-                  <Link key={actor.id} href={`/Actor/${actor.id}`} className='flex flex-col justify-center items-center min-w-fit '>
-                    
-                    {actor.profile_path && 
-                      <img className='w-28' src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} alt={actor.name} />
-                    }
-                    <p className='text-sm'>{actor.name.slice(0,13)}</p>
-                    <p className='text-xs text-gray-600'>{`(${actor.character.slice(0,13)})`}</p>
-                  </Link>
-                )
-              })
-            }
-          </div>
-      </div>
-      
-      {/* Videos */}
-      {/* ============================== */}
-
-      {
-        video? <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
-        : <p className=''></p>
-      }
-
-      {/* Reviews */}
-      {/* ============================== */}
-
-        { reviews && <div className="flex flex-col">
-          <h1 className='text-2xl font-bold '>Reviews</h1>
-                <div className='flex overflow-scroll  gap-2 '>
-          {
-            reviews?.map((review:Review) => {
-              return (
-                <div key={review.id} className='flex flex-col border border-gray-400 p-2 gap-2 mt-3 min-w-fit shadow-2xl'>
-                  <div className="flex flex-col">
-                    <p className='font-semibold'>{`Author: ${review.author}`}</p>
-                    <p className='text-sm flex items-center'>
-                      {`Rating: ${review.author_details.rating}`}
-                      <AiFillStar className='w-3 ml-[2px] pt-1'/>
-                      </p>
-                  </div>
-                  <p key={review.id}>{review.content.slice(0,readMore.num)}..
-
-                  {
-                  review.content.length < 200 ? <span></span> : 
-                  <button key={review.id} className="text-blue-500" onClick={() => {
-                    if(readMore.num === 200){
-                      setReadMore({num: review.content.length, text: 'Show Less'})}
-                      else{setReadMore({num: 200, text: 'Show More'})}}}
-                      >{readMore.text}
-                  </button>
-                    }
-
-                  </p>
-                  <p className='text-xs text-gray-600'>{`Posted by: ${review.author_details.username}`}</p>
-              </div>
-              )
-            })
-          }
+        <PageWrapper>
+          <img className='w-full  'src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
           
+          <div className='px-2'>
+            <h1 className=' text-3xl font-bold'>{movie.title}</h1>
+            <div className="flex flex-col">
+              <div className="flex gap-2 items-center ">
+                <p className='font-semibold border px-[2px] border-gray-700'>{movie?.release_date?.slice(0,4)}</p>
+                <p>{`${movie.runtime} mins`}</p>
+                <div className='flex gap-1'>
+                  {movie.genres?.map((genre:Genre) => { return (<p key={genre?.id}>{genre?.name}</p>)}).slice(0,2)}
                 </div>
-        </div>}
-
-
-      {/* Similar */}
-      {/* ============================== */}
-      <div className="flex flex-col mt-5">
-      <h1 className='text-2xl font-bold '>Recomended</h1>
-        <div className='flex overflow-scroll gap-3  rounded-md hover:border border-gray-400 p-2 '>
-            {
-                similar.map((movie) => {
+              </div>
+              <div className='flex gap-1 text-sm px-[2px]'>
+                {movie.production_companies?.map((company:Genre) => { return (<p key={company?.id}>{company?.name}</p>)}).slice(0,3)}
+              </div>
+            </div>
+            {/* Tagline */}
+            {/* ============================== */}
+          <div className='border-b-2 border-red-700 w-fit mt-3'>
+            <p className='italic'>{movie.tagline}</p>
+          </div>
+          
+          
+          <p className='mt-1'>{movie.overview}</p>
+          {/* Cast */}
+          {/* ============================== */}
+          <div className='flex flex-col gap-2  mt-5 '>
+            <h1 className='text-2xl font-bold'>Cast</h1>
+            <div className="flex overflow-scroll gap-3 rounded-md hover:border border-gray-400 ">
+              {
+                actors.map((actor:Actor) => {
                   return (
-                    <Link  key={movie.id} href={`/Movie/${movie.id}`} as={`/Movie/${movie.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
-        
-                      {movie.backdrop_path ? (
-                      <img className='w-56' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
-                      ) : (
-                      <div className='flex w-56 h-32 justify-center items-center bg-gray-600'>
-                        <h1>{movie.title}</h1>
-                        </div>
-                      )}
-        
-                      <p className='text-sm'>{movie.title}</p>
-                      {/* <p className='text-xs text-gray-600'>{`(${movie.character.slice(0,13)})`}</p> */}
+                    <Link key={actor.id} href={`/Actor/${actor.id}`} className='flex flex-col justify-center items-center min-w-fit '>
+          
+                      {actor.profile_path &&
+                        <img className='w-28' src={`https://image.tmdb.org/t/p/original${actor.profile_path}`} alt={actor.name} />
+                      }
+                      <p className='text-sm'>{actor.name.slice(0,13)}</p>
+                      <p className='text-xs text-gray-600'>{`(${actor.character.slice(0,13)})`}</p>
                     </Link>
                   )
                 })
               }
             </div>
-      </div>
-      </div>
+                </div>
+                
+                {/* Videos */}
+                {/* ============================== */}
+          
+                {
+          video? <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${movie.title} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+          : <p className=''></p>
+                }
+          
+                {/* Reviews */}
+                {/* ============================== */}
+          { reviews && <div className="flex flex-col">
+            <h1 className='text-2xl font-bold '>Reviews</h1>
+                  <div className='flex overflow-scroll  gap-2 '>
+            {
+              reviews?.map((review:Review) => {
+                return (
+                  <div key={review.id} className='flex flex-col border border-gray-400 p-2 gap-2 mt-3 min-w-fit shadow-2xl'>
+                    <div className="flex flex-col">
+                      <p className='font-semibold'>{`Author: ${review.author}`}</p>
+                      <p className='text-sm flex items-center'>
+                        {`Rating: ${review.author_details.rating}`}
+                        <AiFillStar className='w-3 ml-[2px] pt-1'/>
+                        </p>
+                    </div>
+                    <p key={review.id}>{review.content.slice(0,readMore.num)}..
+                    {
+                    review.content.length < 200 ? <span></span> :
+                    <button key={review.id} className="text-blue-500" onClick={() => {
+                      if(readMore.num === 200){
+                        setReadMore({num: review.content.length, text: 'Show Less'})}
+                        else{setReadMore({num: 200, text: 'Show More'})}}}
+                        >{readMore.text}
+                    </button>
+                      }
+                    </p>
+                    <p className='text-xs text-gray-600'>{`Posted by: ${review.author_details.username}`}</p>
+                </div>
+                )
+              })
+            }
+          
+                  </div>
+          </div>}
+          
+          
+                {/* Similar */}
+                {/* ============================== */}
+                <div className="flex flex-col mt-5">
+                <h1 className='text-2xl font-bold '>Recomended</h1>
+          <div className='flex overflow-scroll gap-3  rounded-md hover:border border-gray-400 p-2 '>
+              {
+                  similar.map((movie) => {
+                    return (
+                      <Link  key={movie.id} href={`/Movie/${movie.id}`} as={`/Movie/${movie.id}`} className='flex flex-col justify-center items-center  min-w-fit gap-1  '>
+          
+                        {movie.backdrop_path ? (
+                        <img className='w-56' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} />
+                        ) : (
+                        <div className='flex w-56 h-32 justify-center items-center bg-gray-600'>
+                          <h1>{movie.title}</h1>
+                          </div>
+                        )}
+          
+                        <p className='text-sm'>{movie.title}</p>
+                        {/* <p className='text-xs text-gray-600'>{`(${movie.character.slice(0,13)})`}</p> */}
+                      </Link>
+                    )
+                  })
+                }
+              </div>
+                </div>
+                </div>
+        </PageWrapper>
 
     </div>
   )

@@ -41,7 +41,7 @@ const List = ({ movies,type }: ListProps ) => {
         <div className='flex flex-col justify-center items-center mt-7 p-2'>
             <h1 className='font-bold text-3xl font-Lobster self-start ' >{type}</h1>
             
-            <div className='mt-5 flex  overflow-x-scroll gap-3 p-2'>
+            <div className='mt-5 flex  hover:overflow-x-scroll gap-3 p-2'>
                 {movies.map((movie:Movie) => {
                     return (
                         <MovieCard  key={movie.id} id={movie.id} title={movie.title} poster_path={movie.poster_path}  />

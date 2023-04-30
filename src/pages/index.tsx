@@ -1,6 +1,7 @@
 import React from "react";
 import List from "@/componants/List";
 import axios from "axios";
+import PageWrapper from "@/componants/PageWrapper";
 
 export const getStaticProps = async () => {
   const topRatedRes = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}`)
@@ -54,14 +55,28 @@ interface Movie {
 export default function Home({topRatedMovies, nowPlayingMovies, popularMovies, upcomingMovies}: {topRatedMovies: Movie[], nowPlayingMovies: Movie[], popularMovies: Movie[], upcomingMovies: Movie[]}) {
 
   return (
-    <div className='flex flex-col justify-center items-center' >
-     <List  movies={topRatedMovies} type={"Top rated"}/>
-     <List  movies={nowPlayingMovies} type={"Now Playing"}/>
-     <List  movies={popularMovies} type={"Populer"}/>
-     <div className="mb-10">
-      <List  movies={upcomingMovies} type={"Upcoming"}/>
-     </div>
+    <div className=' overflow-hidden flex flex-col justify-center items-center'>
+      <PageWrapper>
+        {topRatedMovies.length === 0 || nowPlayingMovies.length === 0 || popularMovies.length === 0 || upcomingMovies.length === 0 ? (
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <div className="animate-pulse rounded-lg bg-gray-200 h-16 w-72 my-4"></div>
+            <div className="animate-pulse rounded-lg bg-gray-200 h-96 w-72 my-4"></div>
+            <div className="animate-pulse rounded-lg bg-gray-200 h-16 w-72 my-4"></div>
+          </div>
+        ) : (
+          <>
+            <List movies={topRatedMovies} type={"Top rated"} />
+            <List movies={nowPlayingMovies} type={"Now Playing"} />
+            <List movies={popularMovies} type={"Populer"} />
+            <div className="mb-10">
+              <List movies={upcomingMovies} type={"Upcoming"} />
+            </div>
+          </>
+        )}
+      </PageWrapper>
     </div>
-  )
-}
+  );
+};
+
+
 

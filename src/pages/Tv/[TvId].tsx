@@ -3,6 +3,9 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiFillStar } from 'react-icons/ai';
+import PageWrapper from '@/componants/PageWrapper';
+
+
 
 interface show {
     id: number;
@@ -97,6 +100,7 @@ const TvDetail = () => {
   
     return (
       <div className='flex flex-col'>
+        <PageWrapper>
         <img
           className='w-full'
           src={`https://image.tmdb.org/t/p/original${tv.backdrop_path}`}
@@ -157,7 +161,16 @@ const TvDetail = () => {
       {/* ============================== */}
 
       {
-        video? <iframe className='mt-10 mb-10 h-64 w-full p-2 ' src={`https://www.youtube.com/embed/${video}`} title={`${tv.name} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        video? 
+        <div className="flex justify-center items-center">
+          <iframe className='mt-10 mb-10 
+          h-52 w-80 
+          md:h-[19rem] md:w-[26rem] 
+          lg:h-[30rem] lg:w-[55rem]
+          border border-gray-700 shadow-2xl
+          
+          ' src={`https://www.youtube.com/embed/${video}`} title={`${tv.name} Trailer`}  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
         : <p className=''></p>
       }
 
@@ -205,7 +218,9 @@ const TvDetail = () => {
       {/* ============================== */}
       <div className="flex flex-col mt-5">
       <h1 className='text-2xl font-bold '>Recomended</h1>
-        <div className='flex overflow-scroll gap-3  rounded-md hover:border border-gray-400 p-2 '>
+        <div className='
+        
+        flex overflow-x-scroll gap-3  rounded-md  border-gray-400 p-2 '>
             {
                 similar.map((tv) => {
                   return (
@@ -233,6 +248,7 @@ const TvDetail = () => {
 
 
         </div>
+        </PageWrapper>
   
       </div>
     );

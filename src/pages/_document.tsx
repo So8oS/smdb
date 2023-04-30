@@ -15,7 +15,6 @@ export default function Document() {
       </Head>
       <body>
         <script>
-          AOS.init();
         </script>
         <Main />
         <NextScript />
