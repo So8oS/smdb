@@ -30,7 +30,7 @@ const TvList = ({ type }: { type: string }) => {
     <div className='flex flex-col justify-center items-center mt-7 p-2'>
         <h1 className='font-bold text-3xl font-Lobster self-start ' >{type.charAt(0).toUpperCase() + type.replace('_',' ').slice(1)}</h1>
         
-        <div className='mt-5 flex  overflow-x-scroll gap-3 p-2'>
+        <div className='mt-5 flex  hover:overflow-x-scroll gap-3 p-2'>
             {tv.map((tv:Tv) => {
                 return (
                     <TvCard key={tv.id} id={tv.id} title={tv.name} poster_path={tv.poster_path}  />
