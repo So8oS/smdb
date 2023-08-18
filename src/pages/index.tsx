@@ -3,7 +3,7 @@ import List from "@/componants/List";
 import axios from "axios";
 import PageWrapper from "@/componants/PageWrapper";
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const topRatedRes = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}`)
   const topRatedMovies = topRatedRes.data.results
   
