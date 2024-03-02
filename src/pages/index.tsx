@@ -1,30 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import List from "@/componants/List";
 import axios from "axios";
 import PageWrapper from "@/componants/PageWrapper";
-
-export const getStaticProps = async () => {
-  const topRatedRes = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}`)
-  const topRatedMovies = topRatedRes.data.results
-  
-  const nowPlayingRes = await axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.API_KEY}`)
-  const nowPlayingMovies = nowPlayingRes.data.results
-  
-  const popularRes = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}`)
-  const popularMovies = popularRes.data.results
-  
-  const upcomingRes = await axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.API_KEY}`)
-  const upcomingMovies = upcomingRes.data.results
-  
-  return {
-      props: {
-          topRatedMovies,
-          nowPlayingMovies,
-          popularMovies,
-          upcomingMovies
-      }
-  }
-}
+import Skeleton from "react-loading-skeleton";
 
 interface Movie {
   id: number;
@@ -47,36 +25,76 @@ interface Movie {
   backdrop_path: string;
   video: boolean;
 }
-  
 
+const Home = () => {
+  const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
+  const [nowPlayingMovies, setNowPlayingMovies] = useState<Movie[]>([]);
+  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  const [upcomingMovies, setUpcomingMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const topRatedRes = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}`);
+        setTopRatedMovies(topRatedRes.data.results);
 
+        const nowPlayingRes = await axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.API_KEY}`);
+        setNowPlayingMovies(nowPlayingRes.data.results);
 
-export default function Home({topRatedMovies, nowPlayingMovies, popularMovies, upcomingMovies}: {topRatedMovies: Movie[], nowPlayingMovies: Movie[], popularMovies: Movie[], upcomingMovies: Movie[]}) {
+        const popularRes = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}`);
+        setPopularMovies(popularRes.data.results);
+
+        const upcomingRes = await axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.API_KEY}`);
+        setUpcomingMovies(upcomingRes.data.results);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
+
+  const lists = [
+    { movies: topRatedMovies, type: "Top rated" },
+    { movies: nowPlayingMovies, type: "Now Playing" },
+    { movies: popularMovies, type: "Popular" },
+    { movies: upcomingMovies, type: "Upcoming" },
+  ];
 
   return (
-    <div className=' overflow-hidden flex flex-col justify-center items-center'>
-      <PageWrapper>
-        {topRatedMovies.length === 0 || nowPlayingMovies.length === 0 || popularMovies.length === 0 || upcomingMovies.length === 0 ? (
-          <div className="flex flex-col items-center justify-center w-full h-full">
-            <div className="animate-pulse rounded-lg bg-gray-200 h-16 w-72 my-4"></div>
-            <div className="animate-pulse rounded-lg bg-gray-200 h-96 w-72 my-4"></div>
-            <div className="animate-pulse rounded-lg bg-gray-200 h-16 w-72 my-4"></div>
-          </div>
-        ) : (
-          <>
-            <List movies={topRatedMovies} type={"Top rated"} />
-            <List movies={nowPlayingMovies} type={"Now Playing"} />
-            <List movies={popularMovies} type={"Populer"} />
-            <div className="mb-10">
-              <List movies={upcomingMovies} type={"Upcoming"} />
-            </div>
-          </>
-        )}
-      </PageWrapper>
+    <div className="overflow-hidden flex flex-col ">
+      {lists.map((list, index) => (
+        <List key={index} loading={loading} movies={list.movies} type={list.type} />
+      ))}
     </div>
   );
 };
+export default Home;
 
+const ListSkeleton = () => {
+  return (
+    <div className="flex flex-col  mt-7 p-2">
+      <div className="font-bold text-3xl w-24  font-Lobster self-start ">{<Skeleton />}</div>
 
-
+      <div className="mt-5 flex  hover:overflow-x-scroll gap-3 p-2">
+        {Array.from({ length: 10 }).map((_, index) => {
+          return (
+            <div
+              className="flex flex-col justify-center items-center min-w-fit rounded-md"
+              style={{
+                boxShadow: "0 0 1px red, 0 0 10px red, 0 0 5px red, 0 0 5px red",
+              }}
+            >
+              <Skeleton width={150} height={200} className="w-28 rounded-md shadow-xl hover:shadow-2xl transition duration-300 ease-in-out transform hover:scale-110" />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};

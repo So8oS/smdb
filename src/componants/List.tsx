@@ -1,55 +1,50 @@
-import axios from 'axios'
-import React, { useEffect } from 'react'
-import MovieCard from './MovieCard'
+import React from "react";
+import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 interface Movie {
-    id: number
-    title: string
-    poster_path: string
-    release_date: string
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string;
 }
 
 interface ListProps {
-    movies: Movie[]
-    type : string
+  movies: Movie[];
+  type: string;
+  loading: boolean;
 }
 
-// export const getStaticProps = async () => {
-//     const res = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.API_KEY}`)
-//     const movies = res.data.results
-//     return {
-//         props: {
-//             movies
-//         }
-//     }
-// }
+const List = ({ movies, type }: ListProps) => {
+  const [imageLoded, setImageLoded] = React.useState(false);
+  return (
+    <div className="flex flex-col  mt-7 p-2">
+      <h1 className="font-bold text-3xl font-Lobster self-start ">{type}</h1>
 
-const List = ({ movies,type }: ListProps ) => {
-    // const [movies, setMovies] = React.useState([])
-    // useEffect(() => {
-    //     axios.get(`https://api.themoviedb.org/3/movie/${type}?api_key=${process.env.API_KEY}`)        
-    //     .then((res) => {
-    //         setMovies(res.data.results)
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    // }, [type])
-    console.log(movies)
+      <div className="mt-5 flex overflow-x-scroll md:overflow-x-hidden md:hover:overflow-x-scroll gap-3 p-2">
+        {movies.map((movie: Movie) => {
+          return (
+            <Link
+              href={`/Movie/${movie.id}`}
+              className="flex flex-col justify-center items-center min-w-fit rounded-md   "
+              style={{
+                boxShadow: "0 0 1px red, 0 0 10px red, 0 0 5px red, 0 0 5px red",
+              }}
+            >
+              {!imageLoded && <Skeleton width={112} height={160} className={`w-28 rounded-md h-40  `} />}
+              <img
+                onLoad={() => setImageLoded(true)}
+                className={`w-28 h-40 rounded-md shadow-xl hover:shadow-2xl transition  ${imageLoded ? "block" : "hidden"}  duration-300 ease-in-out transform hover:scale-110`}
+                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                alt={movie.title}
+              />
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
-    return (
-        <div className='flex flex-col justify-center items-center mt-7 p-2'>
-            <h1 className='font-bold text-3xl font-Lobster self-start ' >{type}</h1>
-            
-            <div className='mt-5 flex  hover:overflow-x-scroll gap-3 p-2'>
-                {movies.map((movie:Movie) => {
-                    return (
-                        <MovieCard  key={movie.id} id={movie.id} title={movie.title} poster_path={movie.poster_path}  />
-                    )
-                })}
-            </div>
-        </div>
-    )
-}
-
-export default List 
+export default List;
